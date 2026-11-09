@@ -1,0 +1,137 @@
+"use client";
+
+import React, { useEffect, useRef } from "react";
+
+export function InteractiveMap({
+  activeVehicleId = "TRK-208",
+  onSelectVehicle,
+}: {
+  activeVehicleId?: string;
+  onSelectVehicle?: (id: string) => void;
+}) {
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !mapContainerRef.current) return;
+
+    // Check if Leaflet is already loaded or load dynamically
+    const initLeaflet = () => {
+      const L = (window as any).L;
+      if (!L || mapInstanceRef.current) return;
+
+      const isDark = document.documentElement.classList.contains("dark");
+      const tileUrl = isDark
+        ? "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+        : "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}";
+
+      const map = L.map(mapContainerRef.current, {
+        center: [40.7934, -73.9458],
+        zoom: 12,
+        zoomControl: false,
+      });
+
+      L.tileLayer(tileUrl, {
+        maxZoom: 16,
+        attribution: "Tiles &copy; Esri",
+      }).addTo(map);
+
+      // Route Waypoints for TRK-208 (Bronx -> Harlem -> Corona Queens)
+      const routeCoords = [
+        [40.8521, -73.8964],
+        [40.8176, -73.9281],
+        [40.7934, -73.9458],
+        [40.7614, -73.9213],
+        [40.7498, -73.8621],
+      ];
+
+      L.polyline(routeCoords, {
+        color: "#f97316",
+        weight: 4,
+        opacity: 0.9,
+        lineCap: "round",
+        lineJoin: "round",
+      }).addTo(map);
+
+      // Vehicles
+      const trk208Icon = L.divIcon({
+        className: "custom-marker-pin",
+        html: `
+          <div class="relative flex items-center justify-center cursor-pointer">
+            <span class="animate-ping absolute inline-flex h-8 w-8 rounded-full bg-orange-400 opacity-60"></span>
+            <div class="relative flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-900 border-2 border-orange-500 text-white text-[10px] font-bold shadow-md">
+              <span class="size-1.5 rounded-full bg-orange-400"></span>
+              TRK-208
+              <span class="text-orange-400 font-mono">+25m</span>
+            </div>
+          </div>
+        `,
+        iconSize: [80, 32],
+        iconAnchor: [40, 16],
+      });
+
+      const trk115Icon = L.divIcon({
+        className: "custom-marker-pin",
+        html: `
+          <div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-white text-[10px] font-mono shadow-sm">
+            <span class="size-1.5 rounded-full bg-amber-400"></span>
+            TRK-115
+          </div>
+        `,
+        iconSize: [60, 24],
+        iconAnchor: [30, 12],
+      });
+
+      const van014Icon = L.divIcon({
+        className: "custom-marker-pin",
+        html: `
+          <div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-900 border border-emerald-500 text-white text-[10px] font-mono shadow-sm">
+            <span class="size-1.5 rounded-full bg-emerald-400"></span>
+            VAN-014
+          </div>
+        `,
+        iconSize: [60, 24],
+        iconAnchor: [30, 12],
+      });
+
+      L.marker([40.7934, -73.9458], { icon: trk208Icon })
+        .addTo(map)
+        .bindPopup("<b>TRK-208 (Ethan Brooks)</b><br>Delayed (+25m)<br>Next: Roosevelt Ave, Corona");
+
+      L.marker([40.8521, -73.8964], { icon: trk115Icon }).addTo(map);
+      L.marker([40.7498, -73.9381], { icon: van014Icon }).addTo(map);
+
+      mapInstanceRef.current = map;
+    };
+
+    // Load leaflet CSS & JS if not loaded
+    if (!(window as any).L) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+      document.head.appendChild(link);
+
+      const script = document.createElement("script");
+      script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+      script.onload = initLeaflet;
+      document.head.appendChild(script);
+    } else {
+      initLeaflet();
+    }
+
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
+
+  return (
+    <div
+      ref={mapContainerRef}
+      className="relative size-full rounded-xl z-0 overflow-hidden"
+      style={{ height: "100%", minHeight: "680px", width: "100%" }}
+    />
+  );
+}

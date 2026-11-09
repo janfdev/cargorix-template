@@ -1,0 +1,5 @@
+.DS_Store
+*.log
+*.tmp
+*raw_dump.html
+EOF

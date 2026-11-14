@@ -150,3 +150,41 @@ export async function authenticateUser(email: string, password: string) {
 
   return { success: false, error: 'Invalid email or password' };
 }
+
+export async function registerUser(data: { email: string; password: string; fullName: string; role?: string }) {
+  const userId = `USR-${Date.now().toString().slice(-4)}`;
+  const role = data.role || 'DISPATCHER';
+  const avatar = `/images/avatars/avatar-${(Math.floor(Math.random() * 8) + 1)}.webp`;
+
+  if (isPg) {
+    try {
+      await pgDb.insert(pgUsers).values({
+        id: userId,
+        email: data.email,
+        password: data.password,
+        fullName: data.fullName,
+        role,
+        avatar,
+      });
+      return { success: true, user: { id: userId, email: data.email, fullName: data.fullName, role, avatar } };
+    } catch (e: any) {
+      if (e.message?.includes('unique') || e.code === '23505') {
+        return { success: false, error: 'Email already registered' };
+      }
+    }
+  }
+
+  try {
+    sqliteDb.insert(sqliteUsers).values({
+      id: userId,
+      email: data.email,
+      password: data.password,
+      fullName: data.fullName,
+      role,
+      avatar,
+    }).run();
+    return { success: true, user: { id: userId, email: data.email, fullName: data.fullName, role, avatar } };
+  } catch (e: any) {
+    return { success: false, error: 'Email already registered' };
+  }
+}

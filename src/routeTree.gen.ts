@@ -20,6 +20,7 @@ import { Route as OperationsOverviewRouteImport } from './routes/operations-over
 import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PurchaseOrdersRouteImport } from './routes/purchase-orders'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as RoutePlannerRouteImport } from './routes/route-planner'
 import { Route as ShipmentsRouteImport } from './routes/shipments'
@@ -88,6 +89,11 @@ const ProductsRoute = ProductsRouteImport.update({
 const PurchaseOrdersRoute = PurchaseOrdersRouteImport.update({
   id: '/purchase-orders',
   path: '/purchase-orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReportsRoute = ReportsRouteImport.update({
@@ -173,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/orders': typeof OrdersRoute
   '/products': typeof ProductsRoute
   '/purchase-orders': typeof PurchaseOrdersRoute
+  '/register': typeof RegisterRoute
   '/reports': typeof ReportsRoute
   '/route-planner': typeof RoutePlannerRoute
   '/shipments': typeof ShipmentsRouteWithChildren
@@ -200,6 +207,7 @@ export interface FileRoutesByTo {
   '/orders': typeof OrdersRoute
   '/products': typeof ProductsRoute
   '/purchase-orders': typeof PurchaseOrdersRoute
+  '/register': typeof RegisterRoute
   '/reports': typeof ReportsRoute
   '/route-planner': typeof RoutePlannerRoute
   '/shipments': typeof ShipmentsRouteWithChildren
@@ -228,6 +236,7 @@ export interface FileRoutesById {
   '/orders': typeof OrdersRoute
   '/products': typeof ProductsRoute
   '/purchase-orders': typeof PurchaseOrdersRoute
+  '/register': typeof RegisterRoute
   '/reports': typeof ReportsRoute
   '/route-planner': typeof RoutePlannerRoute
   '/shipments': typeof ShipmentsRouteWithChildren
@@ -257,6 +266,7 @@ export interface FileRouteTypes {
     | '/orders'
     | '/products'
     | '/purchase-orders'
+    | '/register'
     | '/reports'
     | '/route-planner'
     | '/shipments'
@@ -284,6 +294,7 @@ export interface FileRouteTypes {
     | '/orders'
     | '/products'
     | '/purchase-orders'
+    | '/register'
     | '/reports'
     | '/route-planner'
     | '/shipments'
@@ -311,6 +322,7 @@ export interface FileRouteTypes {
     | '/orders'
     | '/products'
     | '/purchase-orders'
+    | '/register'
     | '/reports'
     | '/route-planner'
     | '/shipments'
@@ -339,6 +351,7 @@ export interface RootRouteChildren {
   OrdersRoute: typeof OrdersRoute
   ProductsRoute: typeof ProductsRoute
   PurchaseOrdersRoute: typeof PurchaseOrdersRoute
+  RegisterRoute: typeof RegisterRoute
   ReportsRoute: typeof ReportsRoute
   RoutePlannerRoute: typeof RoutePlannerRoute
   ShipmentsRoute: typeof ShipmentsRouteWithChildren
@@ -430,6 +443,13 @@ declare module '@tanstack/react-router' {
       path: '/purchase-orders'
       fullPath: '/purchase-orders'
       preLoaderRoute: typeof PurchaseOrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reports': {
@@ -568,6 +588,7 @@ const rootRouteChildren: RootRouteChildren = {
   OrdersRoute: OrdersRoute,
   ProductsRoute: ProductsRoute,
   PurchaseOrdersRoute: PurchaseOrdersRoute,
+  RegisterRoute: RegisterRoute,
   ReportsRoute: ReportsRoute,
   RoutePlannerRoute: RoutePlannerRoute,
   ShipmentsRoute: ShipmentsRouteWithChildren,

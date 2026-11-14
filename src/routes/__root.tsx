@@ -16,16 +16,16 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 function RootComponent() {
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
-  const isLoginPage = currentPath === '/login';
+  const isAuthPage = currentPath === '/login' || currentPath === '/register';
   const authed = isAuthenticated();
 
   // If not logged in and trying to access private dashboard, redirect to /login
-  if (!authed && !isLoginPage) {
+  if (!authed && !isAuthPage) {
     return <Navigate to="/login" />;
   }
 
-  // If on login page, render clean login without sidebar
-  if (isLoginPage) {
+  // If on login/register page, render clean layout without sidebar
+  if (isAuthPage) {
     return (
       <div
         className="min-h-screen bg-background text-foreground antialiased"

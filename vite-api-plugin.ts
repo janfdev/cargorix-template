@@ -1,5 +1,5 @@
 import type { Plugin } from 'vite';
-import { getOrders, updateOrderStatus, getFleetVehicles, getShipments, getDrivers, getWarehouses, getStockLedger, authenticateUser } from './src/server/data';
+import { getOrders, updateOrderStatus, getFleetVehicles, getShipments, getDrivers, getWarehouses, getStockLedger, authenticateUser, registerUser } from './src/server/data';
 
 export function cargorixApiPlugin(): Plugin {
   return {
@@ -67,6 +67,23 @@ export function cargorixApiPlugin(): Plugin {
             return res.end(JSON.stringify(ledger));
           }
 
+          if (pathname === '/api/auth/register' && req.method === 'POST') {
+            let body = '';
+            req.on('data', chunk => body += chunk);
+            req.on('end', async () => {
+              try {
+                const { email, password, fullName, role } = JSON.parse(body || '{}');
+                const result = await registerUser({ email, password, fullName, role });
+                res.statusCode = result.success ? 201 : 400;
+                return res.end(JSON.stringify(result));
+              } catch (e: any) {
+                res.statusCode = 500;
+                return res.end(JSON.stringify({ success: false, error: e.message }));
+              }
+            });
+            return;
+          }
+
           if (pathname === '/api/auth/login' && req.method === 'POST') {
             let body = '';
             req.on('data', chunk => body += chunk);
@@ -132,6 +149,23 @@ export function cargorixApiPlugin(): Plugin {
           if (pathname === '/api/stock-ledger' && req.method === 'GET') {
             const ledger = await getStockLedger();
             return res.end(JSON.stringify(ledger));
+          }
+
+          if (pathname === '/api/auth/register' && req.method === 'POST') {
+            let body = '';
+            req.on('data', chunk => body += chunk);
+            req.on('end', async () => {
+              try {
+                const { email, password, fullName, role } = JSON.parse(body || '{}');
+                const result = await registerUser({ email, password, fullName, role });
+                res.statusCode = result.success ? 201 : 400;
+                return res.end(JSON.stringify(result));
+              } catch (e: any) {
+                res.statusCode = 500;
+                return res.end(JSON.stringify({ success: false, error: e.message }));
+              }
+            });
+            return;
           }
 
           if (pathname === '/api/auth/login' && req.method === 'POST') {

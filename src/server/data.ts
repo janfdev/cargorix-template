@@ -1,7 +1,21 @@
 import { db as sqliteDb } from '../db';
 import { pgDb } from '../db/pg';
-import { orders as pgOrders, fleetVehicles as pgFleet } from '../db/schema-pg';
-import { orders as sqliteOrders, fleetVehicles as sqliteFleet } from '../db/schema';
+import { 
+  orders as pgOrders, 
+  fleetVehicles as pgFleet,
+  shipments as pgShipments,
+  drivers as pgDrivers,
+  warehouses as pgWarehouses,
+  stockLedger as pgStockLedger
+} from '../db/schema-pg';
+import { 
+  orders as sqliteOrders, 
+  fleetVehicles as sqliteFleet,
+  shipments as sqliteShipments,
+  drivers as sqliteDrivers,
+  warehouses as sqliteWarehouses,
+  stockLedger as sqliteStockLedger
+} from '../db/schema';
 import { desc, eq } from 'drizzle-orm';
 
 // Connect to Coolify PostgreSQL with seamless fallback to SQLite
@@ -40,6 +54,11 @@ export async function getOrders(filter?: { search?: string; status?: string; car
 }
 
 export async function updateOrderStatus(orderId: string, status: string) {
+  if (isPg) {
+    try {
+      await pgDb.update(pgOrders).set({ status }).where(eq(pgOrders.id, orderId));
+    } catch {}
+  }
   sqliteDb.update(sqliteOrders).set({ status }).where(eq(sqliteOrders.id, orderId)).run();
   return { success: true, orderId, status };
 }
@@ -61,31 +80,49 @@ export async function updateVehicleGps(vehicleId: string, lat: number, lng: numb
 
 // 3. SHIPMENTS
 export async function getShipments() {
-  return sqliteDb.select().from(sqliteOrders).all();
+  if (isPg) {
+    try {
+      return await pgDb.select().from(pgShipments).orderBy(desc(pgShipments.estimatedArrival));
+    } catch {}
+  }
+  return sqliteDb.select().from(sqliteShipments).orderBy(desc(sqliteShipments.estimatedArrival)).all();
 }
 
 export async function getShipmentById(id: string) {
-  const result = sqliteDb.select().from(sqliteOrders).where(eq(sqliteOrders.id, id)).get();
+  if (isPg) {
+    try {
+      const res = await pgDb.select().from(pgShipments).where(eq(pgShipments.id, id));
+      return res[0] || null;
+    } catch {}
+  }
+  const result = sqliteDb.select().from(sqliteShipments).where(eq(sqliteShipments.id, id)).get();
   return result || null;
 }
 
 // 4. WAREHOUSES & DRIVERS & STOCK LEDGER
 export async function getWarehouses() {
-  return [
-    { id: 'WH-NYC-01', name: 'Queens Central Hub', city: 'Queens, NY' },
-    { id: 'WH-NYC-02', name: 'Bronx Cross-Dock Facility', city: 'Bronx, NY' },
-  ];
+  if (isPg) {
+    try {
+      return await pgDb.select().from(pgWarehouses);
+    } catch {}
+  }
+  return sqliteDb.select().from(sqliteWarehouses).all();
 }
 
 export async function getDrivers() {
-  return [
-    { id: 'DRV-102', fullName: 'Marcus Vance', safetyRating: 4.95 },
-    { id: 'DRV-105', fullName: 'Elena Rostova', safetyRating: 4.98 },
-  ];
+  if (isPg) {
+    try {
+      return await pgDb.select().from(pgDrivers).orderBy(desc(pgDrivers.safetyRating));
+    } catch {}
+  }
+  return sqliteDb.select().from(sqliteDrivers).orderBy(desc(sqliteDrivers.safetyRating)).all();
 }
 
 export async function getStockLedger() {
-  return [
-    { id: 'LEDG-5001', sku: 'SKU-PLT-01', productName: 'Component 1', quantity: 20 },
-  ];
+  if (isPg) {
+    try {
+      return await pgDb.select().from(pgStockLedger).orderBy(desc(pgStockLedger.timestamp));
+    } catch {}
+  }
+  return sqliteDb.select().from(sqliteStockLedger).orderBy(desc(sqliteStockLedger.timestamp)).all();
 }

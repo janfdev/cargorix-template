@@ -176,9 +176,11 @@ export function AppSidebar({
       {/* Sidebar Footer User Profile */}
       <div className="border-t border-sidebar-border p-3">
         <div className={`flex items-center gap-3 ${collapsed ? "justify-center" : "px-2"}`}>
-          <div className="size-8 rounded-full bg-muted flex items-center justify-center font-mono font-bold text-xs text-foreground shrink-0 border border-border">
-            EB
-          </div>
+          <img
+            src="/images/avatars/avatar-1.webp"
+            alt="Ethan Brooks"
+            className="size-8 rounded-full object-cover shrink-0 border border-border"
+          />
           {!collapsed && (
             <div className="flex flex-col truncate">
               <span className="text-xs font-medium text-foreground truncate">Ethan Brooks</span>

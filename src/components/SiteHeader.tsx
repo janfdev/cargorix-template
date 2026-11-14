@@ -119,6 +119,15 @@ export function SiteHeader({
           >
             {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
           </button>
+
+          {/* User Profile Avatar in Header */}
+          <div className="flex items-center gap-2 pl-2 border-l border-border">
+            <img
+              src="/images/avatars/avatar-1.webp"
+              alt="Ethan Brooks"
+              className="size-8 rounded-full object-cover border border-border shadow-xs"
+            />
+          </div>
         </div>
       </header>
 

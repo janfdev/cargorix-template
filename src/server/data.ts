@@ -6,7 +6,8 @@ import {
   shipments as pgShipments,
   drivers as pgDrivers,
   warehouses as pgWarehouses,
-  stockLedger as pgStockLedger
+  stockLedger as pgStockLedger,
+  users as pgUsers
 } from '../db/schema-pg';
 import { 
   orders as sqliteOrders, 
@@ -14,7 +15,8 @@ import {
   shipments as sqliteShipments,
   drivers as sqliteDrivers,
   warehouses as sqliteWarehouses,
-  stockLedger as sqliteStockLedger
+  stockLedger as sqliteStockLedger,
+  users as sqliteUsers
 } from '../db/schema';
 import { desc, eq } from 'drizzle-orm';
 
@@ -125,4 +127,26 @@ export async function getStockLedger() {
     } catch {}
   }
   return sqliteDb.select().from(sqliteStockLedger).orderBy(desc(sqliteStockLedger.timestamp)).all();
+}
+
+// 5. AUTHENTICATION & USERS
+export async function authenticateUser(email: string, password: string) {
+  if (isPg) {
+    try {
+      const found = await pgDb.select().from(pgUsers).where(eq(pgUsers.email, email));
+      if (found.length > 0 && found[0].password === password) {
+        const { password: _, ...user } = found[0];
+        return { success: true, user };
+      }
+    } catch {}
+  }
+
+  // SQLite fallback
+  const found = sqliteDb.select().from(sqliteUsers).where(eq(sqliteUsers.email, email)).get();
+  if (found && found.password === password) {
+    const { password: _, ...user } = found;
+    return { success: true, user };
+  }
+
+  return { success: false, error: 'Invalid email or password' };
 }

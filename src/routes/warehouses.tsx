@@ -10,11 +10,11 @@ export const Route = createFileRoute('/warehouses')({
 function WarehousesComponent() {
   const { data = [] } = useQuery({
     queryKey: ['warehouses'],
-    queryFn: async () => [
-      { id: 'WH-NYC-01', name: 'Queens Central Hub', city: 'Queens, NY', capacity: 45000, utilized: 38200, status: 'OPERATIONAL' },
-      { id: 'WH-NYC-02', name: 'Bronx Cross-Dock Facility', city: 'Bronx, NY', capacity: 30000, utilized: 24500, status: 'OPERATIONAL' },
-      { id: 'WH-NJ-01', name: 'Newark Air Cargo Center', city: 'Newark, NJ', capacity: 60000, utilized: 58900, status: 'AT_CAPACITY' },
-    ]
+    queryFn: async () => {
+      const res = await fetch('/api/warehouses').catch(() => null);
+      if (res && res.ok) return await res.json();
+      return [];
+    }
   });
 
   return (

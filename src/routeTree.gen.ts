@@ -15,6 +15,7 @@ import { Route as DriversRouteImport } from './routes/drivers'
 import { Route as FleetRouteImport } from './routes/fleet'
 import { Route as InventoryOverviewRouteImport } from './routes/inventory-overview'
 import { Route as LiveMapRouteImport } from './routes/live-map'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as OperationsOverviewRouteImport } from './routes/operations-overview'
 import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as ProductsRouteImport } from './routes/products'
@@ -62,6 +63,11 @@ const InventoryOverviewRoute = InventoryOverviewRouteImport.update({
 const LiveMapRoute = LiveMapRouteImport.update({
   id: '/live-map',
   path: '/live-map',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OperationsOverviewRoute = OperationsOverviewRouteImport.update({
@@ -162,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/fleet': typeof FleetRoute
   '/inventory-overview': typeof InventoryOverviewRoute
   '/live-map': typeof LiveMapRouteWithChildren
+  '/login': typeof LoginRoute
   '/operations-overview': typeof OperationsOverviewRoute
   '/orders': typeof OrdersRoute
   '/products': typeof ProductsRoute
@@ -188,6 +195,7 @@ export interface FileRoutesByTo {
   '/fleet': typeof FleetRoute
   '/inventory-overview': typeof InventoryOverviewRoute
   '/live-map': typeof LiveMapRouteWithChildren
+  '/login': typeof LoginRoute
   '/operations-overview': typeof OperationsOverviewRoute
   '/orders': typeof OrdersRoute
   '/products': typeof ProductsRoute
@@ -215,6 +223,7 @@ export interface FileRoutesById {
   '/fleet': typeof FleetRoute
   '/inventory-overview': typeof InventoryOverviewRoute
   '/live-map': typeof LiveMapRouteWithChildren
+  '/login': typeof LoginRoute
   '/operations-overview': typeof OperationsOverviewRoute
   '/orders': typeof OrdersRoute
   '/products': typeof ProductsRoute
@@ -243,6 +252,7 @@ export interface FileRouteTypes {
     | '/fleet'
     | '/inventory-overview'
     | '/live-map'
+    | '/login'
     | '/operations-overview'
     | '/orders'
     | '/products'
@@ -269,6 +279,7 @@ export interface FileRouteTypes {
     | '/fleet'
     | '/inventory-overview'
     | '/live-map'
+    | '/login'
     | '/operations-overview'
     | '/orders'
     | '/products'
@@ -295,6 +306,7 @@ export interface FileRouteTypes {
     | '/fleet'
     | '/inventory-overview'
     | '/live-map'
+    | '/login'
     | '/operations-overview'
     | '/orders'
     | '/products'
@@ -322,6 +334,7 @@ export interface RootRouteChildren {
   FleetRoute: typeof FleetRoute
   InventoryOverviewRoute: typeof InventoryOverviewRoute
   LiveMapRoute: typeof LiveMapRouteWithChildren
+  LoginRoute: typeof LoginRoute
   OperationsOverviewRoute: typeof OperationsOverviewRoute
   OrdersRoute: typeof OrdersRoute
   ProductsRoute: typeof ProductsRoute
@@ -382,6 +395,13 @@ declare module '@tanstack/react-router' {
       path: '/live-map'
       fullPath: '/live-map'
       preLoaderRoute: typeof LiveMapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/operations-overview': {
@@ -543,6 +563,7 @@ const rootRouteChildren: RootRouteChildren = {
   FleetRoute: FleetRoute,
   InventoryOverviewRoute: InventoryOverviewRoute,
   LiveMapRoute: LiveMapRouteWithChildren,
+  LoginRoute: LoginRoute,
   OperationsOverviewRoute: OperationsOverviewRoute,
   OrdersRoute: OrdersRoute,
   ProductsRoute: ProductsRoute,

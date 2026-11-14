@@ -15,13 +15,7 @@ function FleetTanStackComponent() {
     queryFn: async () => {
       const res = await fetch('/api/fleet').catch(() => null);
       if (res && res.ok) return await res.json();
-      return [
-        { id: 'TRK-208', plateNumber: 'NY-8821-HD', model: 'Freightliner Cascadia', type: 'HEAVY_TRUCK', status: 'IN_TRANSIT', capacityKg: 18000, currentLoadKg: 14200, fuelPercentage: 78, lastLatitude: 40.816, lastLongitude: -73.945, currentRoute: 'Bronx -> Harlem -> Corona Queens' },
-        { id: 'TRK-104', plateNumber: 'NY-4412-TR', model: 'Volvo VNL 860', type: 'HEAVY_TRUCK', status: 'IN_TRANSIT', capacityKg: 20000, currentLoadKg: 16500, fuelPercentage: 62, lastLatitude: 40.7484, lastLongitude: -73.9857, currentRoute: 'Manhattan Midtown Express' },
-        { id: 'VAN-301', plateNumber: 'NY-9910-EV', model: 'Ford E-Transit Van', type: 'CARGO_EV', status: 'ACTIVE', capacityKg: 3500, currentLoadKg: 2100, fuelPercentage: 92, lastLatitude: 40.7282, lastLongitude: -73.7949, currentRoute: 'Queens Bayside Residential Loop' },
-        { id: 'VAN-302', plateNumber: 'NJ-5521-FN', model: 'Mercedes-Benz Sprinter', type: 'VAN', status: 'IDLE', capacityKg: 4000, currentLoadKg: 0, fuelPercentage: 85, lastLatitude: 40.6895, lastLongitude: -74.1745, currentRoute: 'Newark Airport Logistics Staging' },
-        { id: 'TRK-505', plateNumber: 'NY-1102-HD', model: 'Peterbilt 579', type: 'HEAVY_TRUCK', status: 'MAINTENANCE', capacityKg: 22000, currentLoadKg: 0, fuelPercentage: 45, lastLatitude: 40.8448, lastLongitude: -73.8648, currentRoute: 'Hunts Point Maintenance Yard' },
-      ];
+      return [];
     },
     refetchInterval: 5000,
   });

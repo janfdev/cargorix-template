@@ -10,11 +10,11 @@ export const Route = createFileRoute('/live-map')({
 function LiveMapComponent() {
   const { data: fleet = [] } = useQuery({
     queryKey: ['live-map-vehicles'],
-    queryFn: async () => [
-      { id: 'TRK-208', driver: 'Ethan Brooks', route: 'Bronx - Harlem - Corona', eta: '10:25', status: 'IN_TRANSIT', lat: 40.816, lng: -73.945 },
-      { id: 'TRK-104', driver: 'Elena Rostova', route: 'Manhattan Midtown Express', eta: '11:10', status: 'IN_TRANSIT', lat: 40.748, lng: -73.985 },
-      { id: 'VAN-301', driver: 'Tariq Al-Mansoor', route: 'Queens Bayside Loop', eta: '09:45', status: 'ACTIVE', lat: 40.728, lng: -73.794 },
-    ],
+    queryFn: async () => {
+      const res = await fetch('/api/fleet').catch(() => null);
+      if (res && res.ok) return await res.json();
+      return [];
+    },
     refetchInterval: 3000
   });
 

@@ -28,19 +28,7 @@ interface OrderItem {
 async function fetchOrders() {
   const res = await fetch('/api/orders').catch(() => null);
   if (res && res.ok) return await res.json();
-  
-  return [
-    { id: 'OR-2001', customerName: 'Enterprise Corp Client B', destinationCity: 'Brooklyn, NY', carrier: 'DHL Global', status: 'IN_TRANSIT', priority: 'STANDARD', totalAmount: 1842, itemsCount: 2, weightKg: 43, orderDate: '2026-11-13', source: 'MANUAL' },
-    { id: 'OR-2002', customerName: 'Enterprise Corp Client C', destinationCity: 'Jersey City, NJ', carrier: 'Internal Fleet', status: 'PROCESSING', priority: 'EXPRESS', totalAmount: 2185, itemsCount: 3, weightKg: 61, orderDate: '2026-11-13', source: 'CSV' },
-    { id: 'OR-2003', customerName: 'Enterprise Corp Client D', destinationCity: 'Stamford, CT', carrier: 'UPS Freight', status: 'PENDING', priority: 'URGENT', totalAmount: 2527, itemsCount: 4, weightKg: 80, orderDate: '2026-11-13', source: 'PORTAL' },
-    { id: 'OR-2004', customerName: 'Enterprise Corp Client E', destinationCity: 'Philadelphia, PA', carrier: 'FedEx Express', status: 'CANCELLED', priority: 'EXPRESS', totalAmount: 2870, itemsCount: 5, weightKg: 98, orderDate: '2026-11-13', source: 'API' },
-    { id: 'OR-2005', customerName: 'Enterprise Corp Client F', destinationCity: 'Boston, MA', carrier: 'DHL Global', status: 'DELIVERED', priority: 'STANDARD', totalAmount: 3212, itemsCount: 6, weightKg: 116, orderDate: '2026-11-12', source: 'MANUAL' },
-    { id: 'OR-2006', customerName: 'Enterprise Corp Client G', destinationCity: 'White Plains, NY', carrier: 'Internal Fleet', status: 'IN_TRANSIT', priority: 'URGENT', totalAmount: 3555, itemsCount: 7, weightKg: 134, orderDate: '2026-11-12', source: 'CSV' },
-    { id: 'OR-2007', customerName: 'Enterprise Corp Client H', destinationCity: 'Brooklyn, NY', carrier: 'UPS Freight', status: 'PROCESSING', priority: 'STANDARD', totalAmount: 3897, itemsCount: 8, weightKg: 152, orderDate: '2026-11-12', source: 'PORTAL' },
-    { id: 'OR-2008', customerName: 'Enterprise Corp Client I', destinationCity: 'Jersey City, NJ', carrier: 'FedEx Express', status: 'PENDING', priority: 'EXPRESS', totalAmount: 4240, itemsCount: 1, weightKg: 171, orderDate: '2026-11-12', source: 'API' },
-    { id: 'OR-2009', customerName: 'Enterprise Corp Client J', destinationCity: 'Stamford, CT', carrier: 'DHL Global', status: 'CANCELLED', priority: 'URGENT', totalAmount: 4582, itemsCount: 2, weightKg: 189, orderDate: '2026-11-11', source: 'MANUAL' },
-    { id: 'OR-2010', customerName: 'Enterprise Corp Client K', destinationCity: 'Philadelphia, PA', carrier: 'Internal Fleet', status: 'DELIVERED', priority: 'STANDARD', totalAmount: 4925, itemsCount: 3, weightKg: 207, orderDate: '2026-11-11', source: 'CSV' },
-  ];
+  return [];
 }
 
 export const Route = createFileRoute('/orders')({

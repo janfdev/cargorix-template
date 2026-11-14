@@ -10,11 +10,11 @@ export const Route = createFileRoute('/stock-ledger')({
 function StockLedgerComponent() {
   const { data = [] } = useQuery({
     queryKey: ['stock-ledger'],
-    queryFn: async () => [
-      { id: 'LEDG-5001', sku: 'SKU-PLT-01', name: 'Industrial Heavy Pallet', wh: 'Queens Hub', type: 'INBOUND', qty: '+50', balance: 1250, time: '2026-11-13 14:00', doc: 'DOC-BOL-9801' },
-      { id: 'LEDG-5002', sku: 'SKU-BOX-M', name: 'Cardboard Box Med-Duty', wh: 'Bronx Cross-Dock', type: 'OUTBOUND', qty: '-120', balance: 3400, time: '2026-11-13 13:30', doc: 'DOC-BOL-9802' },
-      { id: 'LEDG-5003', sku: 'SKU-FRZ-90', name: 'Cold-Chain Container Pack', wh: 'Newark Cargo', type: 'TRANSFER', qty: '+15', balance: 415, time: '2026-11-13 11:20', doc: 'DOC-BOL-9803' },
-    ]
+    queryFn: async () => {
+      const res = await fetch('/api/stock-ledger').catch(() => null);
+      if (res && res.ok) return await res.json();
+      return [];
+    }
   });
 
   return (

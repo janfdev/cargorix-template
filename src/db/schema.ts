@@ -79,3 +79,13 @@ export const stockLedger = sqliteTable('stock_ledger', {
   timestamp: text('timestamp').notNull(),
   referenceDoc: text('reference_doc').notNull(),
 });
+
+// 7. USERS & AUTHENTICATION
+export const users = sqliteTable('users', {
+  id: text('id').primaryKey(),
+  email: text('email').notNull().unique(),
+  password: text('password').notNull(),
+  fullName: text('full_name').notNull(),
+  role: text('role').notNull(), // "ADMIN", "DISPATCHER", "DRIVER", "MANAGER"
+  avatar: text('avatar').notNull(),
+});

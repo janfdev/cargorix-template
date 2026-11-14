@@ -79,3 +79,13 @@ export const stockLedger = pgTable('stock_ledger', {
   timestamp: varchar('timestamp', { length: 100 }).notNull(),
   referenceDoc: varchar('reference_doc', { length: 100 }).notNull(),
 });
+
+// 7. USERS & AUTHENTICATION
+export const users = pgTable('users', {
+  id: varchar('id', { length: 64 }).primaryKey(),
+  email: varchar('email', { length: 255 }).notNull().unique(),
+  password: varchar('password', { length: 255 }).notNull(),
+  fullName: varchar('full_name', { length: 255 }).notNull(),
+  role: varchar('role', { length: 50 }).notNull(),
+  avatar: varchar('avatar', { length: 255 }).notNull(),
+});

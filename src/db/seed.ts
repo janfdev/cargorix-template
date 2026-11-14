@@ -78,6 +78,15 @@ sqlite.exec(`
     timestamp TEXT NOT NULL,
     reference_doc TEXT NOT NULL
   );
+
+  CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    full_name TEXT NOT NULL,
+    role TEXT NOT NULL,
+    avatar TEXT NOT NULL
+  );
 `);
 
 console.log('Tables created. Seeding realistic logistics data...');
@@ -190,6 +199,12 @@ for (let i = 1; i <= 20; i++) {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(ledgerId, sku, prodName, wh, tx, qty, balance, time, doc);
 }
+
+// 7. Seed Admin User
+sqlite.prepare(`
+  INSERT OR REPLACE INTO users (id, email, password, full_name, role, avatar)
+  VALUES (?, ?, ?, ?, ?, ?)
+`).run('USR-001', 'admin@cargorix.corp', 'admin123', 'Ethan Brooks', 'ADMIN', '/images/avatars/avatar-1.webp');
 
 const getCount = (tbl: string) => (sqlite.prepare(`SELECT count(*) as c FROM ${tbl}`).get() as any).c;
 

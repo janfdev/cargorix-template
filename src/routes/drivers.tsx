@@ -10,12 +10,11 @@ export const Route = createFileRoute('/drivers')({
 function DriversComponent() {
   const { data = [] } = useQuery({
     queryKey: ['drivers'],
-    queryFn: async () => [
-      { id: 'DRV-102', name: 'Marcus Vance', phone: '+1 (555) 234-8901', rating: 4.95, deliveries: 1420, vehicle: 'TRK-208', status: 'ON_DUTY', avatar: '/images/avatars/avatar-1.webp' },
-      { id: 'DRV-105', name: 'Elena Rostova', phone: '+1 (555) 431-7721', rating: 4.98, deliveries: 2150, vehicle: 'TRK-104', status: 'ON_DUTY', avatar: '/images/avatars/avatar-2.webp' },
-      { id: 'DRV-108', name: 'Tariq Al-Mansoor', phone: '+1 (555) 892-3310', rating: 4.88, deliveries: 980, vehicle: 'VAN-301', status: 'AVAILABLE', avatar: '/images/avatars/avatar-3.webp' },
-      { id: 'DRV-112', name: 'Sarah Jenkins', phone: '+1 (555) 771-5502', rating: 4.92, deliveries: 1640, vehicle: 'VAN-302', status: 'RESTING', avatar: '/images/avatars/avatar-4.webp' },
-    ]
+    queryFn: async () => {
+      const res = await fetch('/api/drivers').catch(() => null);
+      if (res && res.ok) return await res.json();
+      return [];
+    }
   });
 
   return (

@@ -24,7 +24,9 @@ import {
   UserCheck,
   Bell,
   History,
+  LogOut,
 } from "lucide-react";
+import { clearAuthUser } from "@/lib/auth";
 
 const MENU_GROUPS = [
   {
@@ -175,17 +177,32 @@ export function AppSidebar({
 
       {/* Sidebar Footer User Profile */}
       <div className="border-t border-sidebar-border p-3">
-        <div className={`flex items-center gap-3 ${collapsed ? "justify-center" : "px-2"}`}>
-          <img
-            src="/images/avatars/avatar-1.webp"
-            alt="Ethan Brooks"
-            className="size-8 rounded-full object-cover shrink-0 border border-border"
-          />
+        <div className={`flex items-center justify-between gap-3 ${collapsed ? "justify-center" : "px-2"}`}>
+          <div className="flex items-center gap-2.5 overflow-hidden">
+            <img
+              src="/images/avatars/avatar-1.webp"
+              alt="Ethan Brooks"
+              className="size-8 rounded-full object-cover shrink-0 border border-border"
+            />
+            {!collapsed && (
+              <div className="flex flex-col truncate">
+                <span className="text-xs font-medium text-foreground truncate">Ethan Brooks</span>
+                <span className="text-[10px] text-muted-foreground truncate">Fleet Operations Lead</span>
+              </div>
+            )}
+          </div>
           {!collapsed && (
-            <div className="flex flex-col truncate">
-              <span className="text-xs font-medium text-foreground truncate">Ethan Brooks</span>
-              <span className="text-[10px] text-muted-foreground truncate">Fleet Operations Lead</span>
-            </div>
+            <button
+              type="button"
+              title="Sign Out"
+              onClick={() => {
+                clearAuthUser();
+                window.location.href = '/login';
+              }}
+              className="size-7 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors"
+            >
+              <LogOut className="size-3.5" />
+            </button>
           )}
         </div>
       </div>

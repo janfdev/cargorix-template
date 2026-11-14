@@ -10,11 +10,11 @@ export const Route = createFileRoute('/shipments')({
 function ShipmentsComponent() {
   const { data = [], refetch } = useQuery({
     queryKey: ['shipments'],
-    queryFn: async () => [
-      { id: 'SHP-9001', orderId: 'OR-2001', tracking: 'CRX-8801234', origin: 'Queens Central Hub', dest: 'Brooklyn, NY', status: 'IN_TRANSIT', eta: '2026-11-13 18:00', carrier: 'Internal Fleet' },
-      { id: 'SHP-9002', orderId: 'OR-2002', tracking: 'CRX-8802468', origin: 'Bronx Cross-Dock', dest: 'Jersey City, NJ', status: 'OUT_FOR_DELIVERY', eta: '2026-11-13 16:30', carrier: 'DHL Global' },
-      { id: 'SHP-9003', orderId: 'OR-2003', tracking: 'CRX-8803702', origin: 'Newark Air Cargo', dest: 'Stamford, CT', status: 'DELIVERED', eta: '2026-11-13 14:15', carrier: 'FedEx Express' },
-    ]
+    queryFn: async () => {
+      const res = await fetch('/api/shipments').catch(() => null);
+      if (res && res.ok) return await res.json();
+      return [];
+    }
   });
 
   return (

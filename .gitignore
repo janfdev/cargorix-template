@@ -3,6 +3,7 @@
 out/
 build/
 dist/
+cargorix.db*
 
 # Dependencies
 node_modules/

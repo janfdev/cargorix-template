@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, useRouterState } from "@tanstack/react-router";
 import {
   MapPin,
   Activity,
@@ -98,7 +97,8 @@ export function AppSidebar({
   collapsed?: boolean;
   variant?: "default" | "inset" | "floating";
 }) {
-  const pathname = usePathname();
+  const routerState = useRouterState();
+  const pathname = routerState.location.pathname;
 
   return (
     <aside
@@ -111,7 +111,7 @@ export function AppSidebar({
     >
       {/* Brand Header */}
       <div className="flex h-14 items-center border-b border-sidebar-border px-4">
-        <Link href="/live-map" className="flex items-center gap-3 font-semibold overflow-hidden">
+        <Link to="/live-map" className="flex items-center gap-3 font-semibold overflow-hidden">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-[#9de500] text-[#161b1d] font-bold shadow-sm">
             <Truck className="size-5" />
           </div>
@@ -140,7 +140,7 @@ export function AppSidebar({
                 return (
                   <li key={item.path}>
                     <Link
-                      href={item.path}
+                      to={item.path as any}
                       title={item.name}
                       data-active={isActive ? "true" : undefined}
                       className={`flex items-center gap-3 rounded-lg px-2.5 py-2 text-xs font-medium transition-colors ${

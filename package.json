@@ -4,25 +4,36 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "dev": "vite",
+    "build": "vite build --emptyOutDir",
+    "preview": "vite preview"
   },
   "devDependencies": {
+    "@tanstack/router-plugin": "^1.169.0",
+    "@types/better-sqlite3": "^9.6.0",
     "@types/bun": "latest",
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0"
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.14"
   },
   "peerDependencies": {
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.107.1",
+    "@tanstack/react-router": "^1.170.46",
+    "@tanstack/react-table": "^8.21.2",
+    "@tanstack/react-virtual": "^3.14.26",
+    "better-sqlite3": "^13.1.1",
     "clsx": "^2.1.1",
+    "drizzle-orm": "^0.45.4",
     "lucide-react": "^1.70.0",
     "next": "^16.4.5",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "tailwind-merge": "^3.7.0"
+    "tailwind-merge": "^3.7.0",
+    "zod": "^4.6.7"
   }
 }

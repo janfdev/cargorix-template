@@ -1,0 +1,20 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { RouterProvider } from '@tanstack/react-router';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { getRouter } from './router';
+import '@/app/globals.css';
+
+const { router, queryClient } = getRouter();
+
+const rootElement = document.getElementById('root')!;
+if (!rootElement.innerHTML) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </React.StrictMode>
+  );
+}

@@ -14,7 +14,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootComponent() {
   return (
-    <div className="min-h-screen bg-background text-foreground antialiased font-sans">
+    <div
+      className="min-h-screen bg-background text-foreground antialiased"
+      style={{ fontFamily: "'Geist Mono', ui-monospace, monospace" }}
+    >
       <SidebarWrapper>
         <Outlet />
       </SidebarWrapper>

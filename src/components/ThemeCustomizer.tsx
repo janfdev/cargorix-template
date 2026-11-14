@@ -83,6 +83,8 @@ export function ThemeCustomizer() {
     // 3. Font
     root.style.setProperty("font-family", settings.font);
     root.style.setProperty("--font-sans", settings.font);
+    root.style.setProperty("--font-geist-mono", settings.font);
+    document.body.style.fontFamily = settings.font;
 
     // 4. Radius
     root.style.setProperty("--radius", settings.radius);
